@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './App.css';
-import { categorizeIngredients } from './ingredients'; // Import only the function
+import { categorizeIngredients } from './ingredients';
 
 function App() {
   const [ingredients, setIngredients] = useState("");

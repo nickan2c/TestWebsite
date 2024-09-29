@@ -15,7 +15,7 @@ const categorizeIngredients = (input) => {
       categorized.bad.push(ingredient);
     } else if (ingredientsData.weirdIngredients.includes(ingredient)) {
       categorized.weird.push(ingredient);
-    } else if (ingredientsData.goodIngredients.includes(ingredient)) {
+    } else {
       categorized.good.push(ingredient);
     }
   });
