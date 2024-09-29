@@ -1,0 +1,27 @@
+{
+    "badIngredients": [
+      "BHA",                  
+      "BHT",                  
+      "MSG",                  
+      "Sodium Nitrate",
+      "Sodium Nitrite",
+      "Potassium Bromate",
+      "Sodium Benzoate",
+      "Propyl Gallate",
+      "Artificial Colors",
+      "Preservative E202"
+    ],
+    "weirdIngredients": [
+      "Dextrose",
+      "Sucralose",
+      "Aspartame",
+      "High Fructose Corn Syrup",
+      "Propylene Glycol",
+      "Xanthan Gum",
+      "Carrageenan",
+      "Sorbitol",
+      "Maltodextrin",
+      "Glycerin"
+    ]
+  }
+  
