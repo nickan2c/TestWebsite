@@ -1,5 +1,6 @@
 {
-    "badIngredients": [
+    "harmful": [
+      "a",
       "BHA",                  
       "BHT",                  
       "MSG",                  
@@ -11,7 +12,8 @@
       "Artificial Colors",
       "Preservative E202"
     ],
-    "weirdIngredients": [
+    "questionable": [
+     "b", 
       "Dextrose",
       "Sucralose",
       "Aspartame",

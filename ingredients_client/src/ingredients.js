@@ -1,4 +1,3 @@
-// ingredients.js
 import ingredientsData from './data/ingredients.json';
 
 // Function to categorize ingredients

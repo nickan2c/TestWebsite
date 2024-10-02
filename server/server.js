@@ -9,6 +9,7 @@ const PORT = 5000;
 app.use(cors());  // Enable CORS for all routes
 app.use(bodyParser.json());
 
+
 // Define lists of ingredients
 const badIngredients = [
   "BHA", "BHT", "MSG", "Sodium Nitrate", "Preservative E202", // Add more bad preservatives

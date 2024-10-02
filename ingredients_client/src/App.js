@@ -1,112 +1,135 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import ingredientsData from './data/ingredients';
+import IngredientBox from './IngredientBox';
 import './App.css';
-import { categorizeIngredients } from './ingredients';
 
-function App() {
-  const [ingredients, setIngredients] = useState("");
-  const [bad, setBad] = useState([]);
-  const [weird, setWeird] = useState([]);
-  const [good, setGood] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  
-  // State to manage visibility of ingredient lists
-  const [isBadOpen, setIsBadOpen] = useState(false);
-  const [isWeirdOpen, setIsWeirdOpen] = useState(false);
-  const [isGoodOpen, setIsGoodOpen] = useState(false);
+const Collapsible = ({ title, children, isOpen, toggleOpen }) => {
+  return (
+    <div>
+      <button onClick={toggleOpen} className="collapsible-button">
+        {isOpen ? 'Hide' : 'Show'} {title}
+      </button>
+      {isOpen && <div className="collapsible-content">{children}</div>}
+    </div>
+  );
+};
 
-  const handleSubmit = () => {
-    setErrorMessage("");
-    setIsChecked(false);
-    setBad([]);
-    setWeird([]);
-    setGood([]);
+const App = () => {
+  const [inputText, setInputText] = useState('');
+  const [categories, setCategories] = useState({
+    harmful: [],
+    questionable: [],
+    safe: [],
+  });
+  const [showCollapsibles, setShowCollapsibles] = useState(false); // Track if collapsibles should be shown
+  const [allOpen, setAllOpen] = useState(true); // Track if all collapsibles should be open or closed
 
-    if (!ingredients.trim()) {
-      setErrorMessage("You need to add some ingredients first.");
-      return;
+  // Function to classify ingredients
+  const classifyIngredients = () => {
+    const inputIngredients = inputText.toLowerCase().split(',').map(item => item.trim());
+
+    const harmful = inputIngredients.filter(ingredient =>
+      ingredientsData.harmful.map(ingredient => ingredient.toLowerCase())
+  .includes(ingredient)
+    );
+    const questionable = inputIngredients.filter(ingredient =>
+      ingredientsData.questionable.map(ingredient => ingredient.toLowerCase())
+      .includes(ingredient)
+    );
+    const safe = inputIngredients.filter(
+      ingredient => !harmful.includes(ingredient) && !questionable.includes(ingredient)
+    );
+
+    setCategories({
+      harmful,
+      questionable,
+      safe,
+    });
+
+    // Show collapsibles and open all after classification
+    setShowCollapsibles(true);
+    setAllOpen(true);
+  };
+
+  // Handle key press to trigger classification when Enter is pressed
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevents newline in the textarea
+      classifyIngredients();
     }
+  };
 
-    // Use the categorizeIngredients function from the imported module
-    const result = categorizeIngredients(ingredients);
-    setBad(result.bad);
-    setWeird(result.weird);
-    setGood(result.good);
-    setIsChecked(true);
+  // Toggle all collapsibles open or closed
+  const toggleAll = () => {
+    setAllOpen(!allOpen);
   };
 
   return (
     <div className="container">
-      <h1>Ingredients Checker</h1>
-
+      <h1>Ingredient Classifier</h1>
       <textarea
-        placeholder="Enter ingredients list..."
-        value={ingredients}
-        onChange={(e) => setIngredients(e.target.value)}
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        onKeyDown={handleKeyPress}
+        placeholder="Enter ingredients separated by commas"
+        className="input-textarea"
       />
+      <button onClick={classifyIngredients} className="classify-button">
+        Classify
+      </button>
 
-      <button onClick={handleSubmit}>Check Ingredients</button>
+      {showCollapsibles && (
+        <>
+          {/* Expand/Collapse all buttons */}
+          <button onClick={toggleAll} className="toggle-all-button">
+            {allOpen ? 'Close All' : 'Expand All'}
+          </button>
 
-      {errorMessage && <p className="error">{errorMessage}</p>}
+          <Collapsible
+            title="Harmful Ingredients"
+            isOpen={allOpen}
+            toggleOpen={() => setAllOpen(!allOpen)}
+          >
+            {categories.harmful.length > 0 ? (
+              categories.harmful.map((ingredient, index) => (
+                <IngredientBox key={index} ingredient={ingredient} category="harmful" tooltip="Harmful ingredient" />
+              ))
+            ) : (
+              <p>No harmful ingredients found.</p>
+            )}
+          </Collapsible>
 
-      {isChecked && (
-        <div className="results">
-          {/* Bad Ingredients Section */}
-          {bad.length > 0 && (
-            <div>
-              <h3 onClick={() => setIsBadOpen(!isBadOpen)} className="toggle-header">
-                Bad Ingredients {isBadOpen ? '-' : '+'}
-              </h3>
-              {isBadOpen && (
-                <ul className="bad">
-                  {bad.map((ingredient) => (
-                    <li key={ingredient}>{ingredient}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
+          <Collapsible
+            title="Questionable Ingredients"
+            isOpen={allOpen}
+            toggleOpen={() => setAllOpen(!allOpen)}
+          >
+            {categories.questionable.length > 0 ? (
+              categories.questionable.map((ingredient, index) => (
+                <IngredientBox key={index} ingredient={ingredient} category="questionable" tooltip="Questionable ingredient" />
+              ))
+            ) : (
+              <p>No questionable ingredients found.</p>
+            )}
+          </Collapsible>
 
-          {/* Weird Ingredients Section */}
-          {weird.length > 0 && (
-            <div>
-              <h3 onClick={() => setIsWeirdOpen(!isWeirdOpen)} className="toggle-header">
-                Weird Ingredients {isWeirdOpen ? '-' : '+'}
-              </h3>
-              {isWeirdOpen && (
-                <ul className="weird">
-                  {weird.map((ingredient) => (
-                    <li key={ingredient}>{ingredient}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {/* Good Ingredients Section */}
-          {good.length > 0 && (
-            <div>
-              <h3 onClick={() => setIsGoodOpen(!isGoodOpen)} className="toggle-header">
-                Good Ingredients {isGoodOpen ? '-' : '+'}
-              </h3>
-              {isGoodOpen && (
-                <ul className="good">
-                  {good.map((ingredient) => (
-                    <li key={ingredient}>{ingredient}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {/* Message if no bad or weird ingredients are found */}
-          {bad.length === 0 && weird.length === 0 && good.length > 0 && (
-            <p>No bad or weird ingredients found, you're good to go!</p>
-          )}
-        </div>
+          <Collapsible
+            title="Safe Ingredients"
+            isOpen={allOpen}
+            toggleOpen={() => setAllOpen(!allOpen)}
+          >
+            {categories.safe.length > 0 ? (
+              categories.safe.map((ingredient, index) => (
+                <IngredientBox key={index} ingredient={ingredient} category="safe" tooltip="Safe ingredient" />
+              ))
+            ) : (
+              <p>All ingredients are safe!</p>
+            )}
+          </Collapsible>
+        </>
       )}
     </div>
   );
-}
+};
 
 export default App;
