@@ -1,7 +1,11 @@
 {
   "name": "client",
   "version": "0.1.0",
+<<<<<<< HEAD
   "homepage": "https://nickan2c.github.io/TestWebsite",
+=======
+  "homepage": "https://nickan2c.github.io/TestWebsite/ingredients_client",
+>>>>>>> 35b3cff (Update package.json)
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
