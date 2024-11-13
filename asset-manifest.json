@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/TestWebsite/ingredients_client/public/static/css/main.4ead1dc6.css",
+    "main.js": "/TestWebsite/ingredients_client/public/static/js/main.f90a1397.js",
+    "index.html": "/TestWebsite/ingredients_client/public/index.html",
+    "main.4ead1dc6.css.map": "/TestWebsite/ingredients_client/public/static/css/main.4ead1dc6.css.map",
+    "main.f90a1397.js.map": "/TestWebsite/ingredients_client/public/static/js/main.f90a1397.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4ead1dc6.css",
+    "static/js/main.f90a1397.js"
+  ]
+}
